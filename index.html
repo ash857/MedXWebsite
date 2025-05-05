@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedX Website</title>
+    <link rel="stylesheet" type = "text/css" href="styles/styles.css">
+</head>
+<body>
+    <header id = "top-nav-container">
+        <div id = "logo-container">
+            <img src="images/logo.png" alt="MedX Logo" id = "logo">
+        </div>
+        <div id = "desktop-nav">
+            <ul>
+                <li><a href = "store.html" class="nav-text">Store</a></li>
+                <li>
+                    <div class = "account-btn">
+                        <a>A</a>
+                    </div>
+                </li>
+                <li>
+                    <div class = "cart-btn">
+                        <svg class="cart-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+                        </svg>
+                    </div>
+                </li>
+                <li>
+                    <div class = "settings-btn">
+                        <img src="images/Settings.png" alt="Settings" class = "settings-icon">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id = "mobile-nav" onclick="toggleMobileMenu(this)">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+            <ul class="mobile-menu">
+                <li class="mobile-close-nav" onclick="toggleMobileMenu(this)">
+                  <div class="bar1"></div>
+                  <div class="bar2"></div>
+                  <div class="bar3"></div>
+                </li>
+                <li><a href = "store.html">Store</a></li>
+                <li>
+                    <div class = "mobile-account-btn">
+                        <a>A</a>
+                    </div>
+                </li>
+                <li>
+                    <div class = "mobile-cart-btn">
+                        <svg class="cart-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+                        </svg>
+                    </div>
+                </li>
+                <li>
+                    <div class = "settings-btn">
+                        <img src="images/Settings.png" alt="Settings" class = "settings-icon">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="banner">
+        <div class="banner-content">
+          <h1>Swift Care</h1>
+          <p>From Sky to Doorstep</p>
+          <button>Shop Now</button>
+        </div>
+        <svg class="bottom-curve" viewBox="0 0 1440 150" preserveAspectRatio="none">
+            <path d="
+              M0,0 
+              C150,100 300,100 400,100 
+              L1040,100 
+              C1140,100 1290,100 1440,0 
+              L1440,150 L0,150 Z" 
+            fill='#353244'/>
+        </svg>
+    </div>
+
+    <div class = "carousel-container">
+        <div class = "carousel-content">
+            <div class = "carousel-slide">
+                <img src="images/image_template.png" alt="Slide 1">
+                <div class = "carousel-text">
+                    <h2>Product 1</h2>
+                    <p>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah 
+                       blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah 
+                    </p>
+                </div>
+            </div>
+            <div class = "carousel-slide">
+                <img src="images/image_template.png" alt="Slide 2">
+                <div class = "carousel-text">
+                    <h2>Product 2</h2>
+                    <p>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah 
+                       blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah 
+                    </p>
+                </div>
+            </div>
+            <div class = "carousel-slide">
+                <img src="images/image_template.png" alt="Slide 3">
+                <div class = "carousel-text">
+                    <h2>Product 3</h2>
+                    <p>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah 
+                       blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah 
+                    </p>
+                </div>
+            </div>
+        </div>
+        <button class = "carousel-btn prev">&#10094;</button>
+        <button class = "carousel-btn next">&#10095;</button>
+    </div>
+
+    <footer id = "footer">
+        <div class="footer-content">
+            <div class="footer-contact">
+                <img src="images/logo.png" alt="MedX Logo" id = "footer-logo-img">
+                <p>Phone: 021065425</p>
+                <p>Email: MedX@gmail.com</p>
+                <p>Location: 12 place, place</p>
+            </div>
+            <div class = "bar-break"></div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Store</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Prescriptions</a></li>
+                </ul>
+            </div>
+            <div class = "bar-break"></div>
+            <div class="footer-socials">
+                <ul>
+                    <li><a href="#"><img src="images/youtube.png" alt="Youtube"></a></li>
+                    <li><a href="#"><img src="images/facebook.png" alt="Facebook"></a></li>
+                    <li><a href="#"><img src="images/twitter.png" alt="Twitter"></a></li>
+                    <li><a href="#"><img src="images/instagram.png" alt="Instagram"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+</body>
+</html>
