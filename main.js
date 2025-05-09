@@ -9,7 +9,7 @@ const nextButton = document.querySelector('.carousel-btn.next');
 const prevButton = document.querySelector('.carousel-btn.prev');
 const dots = document.querySelectorAll('.carousel-dots .dot');
 let currentIndex = 0;
-let slideInterval = setInterval(nextSlide, 5000);  // Change slide every 3 seconds
+let slideInterval = setInterval(nextSlide, 7000);  // Change slide every 3 seconds
 
 function updateSlidePosition() {
     const slideWidth = slides[0].clientWidth;
