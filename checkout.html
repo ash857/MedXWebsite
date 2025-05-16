@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedX Website</title>
+    <link rel="stylesheet" type = "text/css" href="styles/styles.css">
+</head>
+<body class="checkout-body">
+    <header id = "top-nav-container">
+        <div id = "logo-container">
+            <img src="images/logo.png" alt="MedX Logo" id = "logo">
+        </div>
+        <div id = "desktop-nav">
+            <ul>
+                <li><a href = "store.html" class="nav-text">Store</a></li>
+                <li>
+                    <div class = "account-btn">
+                        <a>A</a>
+                    </div>
+                </li>
+                <li>
+                    <div class = "cart-btn">
+                        <svg class="cart-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+                        </svg>
+                    </div>
+                </li>
+                <li>
+                    <div class = "settings-btn">
+                        <img src="images/Settings.png" alt="Settings" class = "settings-icon">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id = "mobile-nav" onclick="toggleMobileMenu(this)">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+            <ul class="mobile-menu">
+                <li class="mobile-close-nav" onclick="toggleMobileMenu(this)">
+                  <div class="bar1"></div>
+                  <div class="bar2"></div>
+                  <div class="bar3"></div>
+                </li>
+                <li><a href = "store.html">Store</a></li>
+                <li>
+                    <div class = "mobile-account-btn">
+                        <a>A</a>
+                    </div>
+                </li>
+                <li>
+                    <div class = "mobile-cart-btn">
+                        <svg class="cart-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+                        </svg>
+                    </div>
+                </li>
+                <li>
+                    <div class = "settings-btn">
+                        <img src="images/Settings.png" alt="Settings" class = "settings-icon">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="sidebar-btn">
+        <button class="cart-toggle-btn" onclick="toggleCart()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/></svg>
+        </button>
+    </div>
+    
+    <div class = "cart-container">
+        <button class="close-cart-btn" onclick="toggleCart()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+            </svg>
+        </button>
+        <div class = "cart-content">
+            <div class = "cart-header">
+                <h2>Your cart</h2>
+                <button class="checkout-btn">Place order</button>
+            </div>
+            <div class = "cart-bar-break"></div>
+            <div class="prices">
+                <div class="Subtotal">
+                    <h3>Subtotal:</h3>
+                    <h3>$00.00</h3>
+                </div>
+                <div class="Total">
+                    <h3>Total:</h3>
+                    <h3>$00.00</h3>
+                </div>
+            </div>
+            <div class = "cart-bar-break"></div>
+            <h2>Items</h2>
+            <div class="cart-items">
+                <div class="cart-item">
+                    <img src="images/product-cart-image-1.png" alt="cart product 1 image">
+                    <div class="cart-item-text">
+                        <p>Item 1</p>
+                        <p>$24.00</p>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill = "currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
+                        </button>
+                        <p class = item-quantity>1</p>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill = "currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="cart-item">
+                    <img src="images/product-cart-image-1.png" alt="cart product 1 image">
+                    <div class="cart-item-text">
+                        <p>Item 1</p>
+                        <p>$24.00</p>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill = "currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
+                        </button>
+                        <p class = item-quantity>1</p>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill = "currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="cart-item">
+                    <img src="images/product-cart-image-1.png" alt="cart product 1 image">
+                    <div class="cart-item-text">
+                        <p>Item 1</p>
+                        <p>$24.00</p>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill = "currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
+                        </button>
+                        <p class = item-quantity>1</p>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill = "currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="cart-item">
+                    <img src="images/product-cart-image-1.png" alt="cart product 1 image">
+                    <div class="cart-item-text">
+                        <p>Item 1</p>
+                        <p>$24.00</p>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill = "currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
+                        </button>
+                        <p class = item-quantity>1</p>
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill = "currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <div class ="checkout-page-container">
+        <div class ="account-checkout-section">
+            <h3>1. Sign in or Sign up</h3>
+            <div class = account-checkout-content>
+                <div class="login-signup-button">
+                    <button class="login-btn active" onclick="loginPressed()">Sign in</button>
+                    <button class="signup-btn" onclick="signupPressed()">Sign up</button>
+                </div>
+                <div class="login-container">
+                    <div class="continue-with-buttons">
+                        <button class="google-btn">
+                            <img src ="images/google 1.png" alt="google logo">
+                            <p>Continue with Google</p>
+                        </button>   
+                        <button class="facebook-btn">
+                            <img src="images/facebook 1.png" alt="facebook logo">
+                            <p>Continue with Facebook</p>
+                        </button>
+                        <button class="apple-btn">
+                            <img src="images/apple 1.png" alt="apple logo">
+                            <p>Continue with Apple</p>
+                        </button>
+                        <div class="contiune-with-email">
+                            <div class ="email-bar-break"></div>
+                            <p class="email">Or continue with email</p>
+                            <div class ="email-bar-break"></div>
+                        </div>
+                    </div>
+                    <form class="account-details-form" onsubmit="event.preventDefault(); goToOrderDetails();">
+                        <div class="email">
+                            <p>Email</p>
+                            <input class ="account-input" placeholder="Required" required>
+                        </div>
+                        <div class="password">
+                            <p>Password</p>
+                            <input class ="account-input" placeholder="Required" required>
+                        </div>
+                        <div class ="forgot-password">
+                            <p>Forgot password</p>
+                        </div>
+                        <button class="Signin-btn">Sign in</button>
+                    </form>
+                </div>
+
+                <div class="signup-container">
+                    <div class="continue-with-buttons">
+                        <button class="google-btn">
+                            <img src ="images/google 1.png" alt="google logo">
+                            <p>Continue with Google</p>
+                        </button>   
+                        <button class="facebook-btn">
+                            <img src="images/facebook 1.png" alt="facebook logo">
+                            <p>Continue with Facebook</p>
+                        </button>
+                        <button class="apple-btn">
+                            <img src="images/apple 1.png" alt="apple logo">
+                            <p>Continue with Apple</p>
+                        </button>
+                        <div class="contiune-with-email">
+                            <div class ="email-bar-break"></div>
+                            <p>Or</p>
+                            <div class ="email-bar-break"></div>
+                        </div>
+                    </div>
+                    <form class="account-details-form" onsubmit="event.preventDefault(); goToOrderDetails();">
+                        <div class="name">
+                            <div class="fname">
+                                <p>First name</p>
+                                <input type="text" class="account-input" placeholder="Required" required>
+                            </div>
+                            <div class="lname">
+                                <p>Last name</p>
+                                <input type="text" class ="account-input" placeholder="Required" required>
+                            </div>
+                        </div>
+                        <div class="email">
+                            <p>Email</p>
+                            <input class ="account-input" placeholder="Required" type="email" required> 
+                        </div>
+                        <div class="mobile-number">
+                            <p>Phone number</p>
+                            <div class="number-container">
+                                <input class="number-identifer" placeholder="+64" type="tel" required>
+                                <input class ="account-input" placeholder="Required" type="tel" required>
+                            </div>
+                        </div>
+                        <div class="password">
+                            <p>Password</p>
+                            <input class ="account-input" placeholder="Required" type="password" required>
+                        </div>
+                        
+                        <button class="Signin-btn" type="submit">Sign up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class ="account-checkout-section">
+            <h3>2. Order details</h3>
+        </div>
+
+        <div class ="account-checkout-section">
+            <h3>3. Payment details</h3>
+        </div>
+
+        <button class="checkout-btn">Place order</button>
+         
+    </div>
+
+
+        
+    <footer id = "footer">
+        <div class="footer-content">
+            <div class="footer-contact">
+                <img src="images/logo.png" alt="MedX Logo" id = "footer-logo-img">
+                <p>Phone: 021065425</p>
+                <p>Email: MedX@gmail.com</p>
+                <p>Location: 12 place, place</p>
+            </div>
+            <div class = "bar-break"></div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Store</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Prescriptions</a></li>
+                </ul>
+            </div>
+            <div class = "bar-break"></div>
+            <div class="footer-socials">
+                <ul>
+                    <li><a href="#"><img src="images/youtube.png" alt="Youtube"></a></li>
+                    <li><a href="#"><img src="images/facebook.png" alt="Facebook"></a></li>
+                    <li><a href="#"><img src="images/twitter.png" alt="Twitter"></a></li>
+                    <li><a href="#"><img src="images/instagram.png" alt="Instagram"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+</body>
+</html>

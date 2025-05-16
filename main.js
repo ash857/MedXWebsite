@@ -143,6 +143,7 @@ function toggleSideBar(){
 
   sidebar.classList.toggle('open');
   body.classList.toggle('shifted');
+  calculateSlidesPerPage();
 }
 
 function goToMenu(){
@@ -222,4 +223,37 @@ function moveSidebarToggle(toggle) {
   } else {
     sidebarToggle.style.top = `0.1rem`;
   }
+}
+
+function loginPressed(){
+  const loginBtn = document.querySelector('.login-btn');
+  const signupBtn = document.querySelector('.signup-btn');
+  const loginContainer = document.querySelector('.login-container');
+  const signupContainer = document.querySelector('.signup-container');
+  loginBtn.classList.add('active');
+  signupBtn.classList.remove('active');
+  loginContainer.style.display = `flex`;
+  signupContainer.style.display = `none`;
+}
+
+function signupPressed(){
+  const loginBtn = document.querySelector('.login-btn');
+  const signupBtn = document.querySelector('.signup-btn');
+  const loginContainer = document.querySelector('.login-container');
+  const signupContainer = document.querySelector('.signup-container');
+  loginBtn.classList.remove('active');
+  signupBtn.classList.add('active');
+  loginContainer.style.display = `none`;
+  signupContainer.style.display = `flex`;
+}
+
+document.querySelector('.account-details-form-2').addEventListener('submit', function(e) {
+  e.preventDefault();
+});
+
+function toggleCart(){
+  const cart = document.querySelector('.cart-container');
+  const body2 = document.querySelector('.checkout-body');
+  cart.classList.toggle('open');
+  body2.classList.toggle('cart-shifted');
 }
