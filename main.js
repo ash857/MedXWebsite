@@ -18,8 +18,13 @@ const remainingSlides = totalSlides % slidesPerPage;
 
 function calculateSlidesPerPage() {
   const isHomePage = window.location.pathname === "/" || window.location.pathname.includes("index");
+  const isTrackingPage = window.location.pathname.includes("order-tracking");
   if (isHomePage) {
     slidesPerPage = 1;
+  } else if(isTrackingPage){
+    const containerWidth = carousel.clientWidth;
+    const slideMinWidth = 150;
+    slidesPerPage = Math.max(1, Math.floor(containerWidth / slideMinWidth));
   } else {
     const containerWidth = carousel.clientWidth;
     const slideMinWidth = 350;
@@ -146,6 +151,14 @@ function toggleSideBar(){
   calculateSlidesPerPage();
 }
 
+function toggleTrackingSidebar(){
+  let sidebar = document.querySelector('.tracking-sidebar');
+  let body = document.querySelector('.tracking-body');
+
+  sidebar.classList.toggle('open');
+  body.classList.toggle('shifted');
+}
+
 function goToMenu(){
   let menuContent = document.querySelector('.store-content');
   let categoryContent = document.querySelector('.category-content');
@@ -257,3 +270,38 @@ function toggleCart(){
   cart.classList.toggle('open');
   body2.classList.toggle('cart-shifted');
 }
+
+
+function trackingButtonPressed(){
+  let menuContent = document.querySelector('.order-container');
+  let categoryContent = document.querySelector('.order-container');
+
+  menuContent.classList.add('fade-out');
+  categoryContent.classList.add('fade-out');
+
+  setTimeout(() => {
+    menuContent.style.display = 'none';
+    menuContent.classList.remove('fade-out');
+    categoryContent.style.display = 'none';
+    categoryContent.classList.remove('fade-out');
+
+    categoryContent.style.display = 'flex';
+    categoryContent.classList.add('fade-in');
+
+    setTimeout(() => {
+      categoryContent.classList.remove('fade-in');
+    }, 200);
+
+    calculateSlidesPerPage();
+  }, 200);
+
+  let buttons = document.querySelectorAll('.order-tracking-button');
+
+  buttons.forEach(button => {
+    button.classList.remove('active');
+    button.addEventListener('click', function() {
+      button.classList.add('active');
+    });
+  });
+}
+
