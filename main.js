@@ -305,3 +305,16 @@ function trackingButtonPressed(){
   });
 }
 
+function copyOrderText(el) {
+  const text = el.querySelector(".text-to-copy").textContent;
+  navigator.clipboard.writeText(text);
+  const tooltip = el.querySelector(".tooltip-text");
+  const tooltipText = el.querySelector(".tooltip-text").textContent;
+  tooltip.textContent = "Copied!";
+  setTimeout(() => tooltip.textContent = tooltipText, 2000);
+}
+
+function toggleTimeline() {
+  const el = document.querySelector(".timeline");
+  el.classList.toggle("show");
+}

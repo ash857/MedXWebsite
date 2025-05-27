@@ -1330,7 +1330,6 @@ input {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
 }
 
 .order-tracking-button{
@@ -1340,6 +1339,7 @@ input {
     justify-content: flex-start;
     gap: 1rem;
     padding-left: 1rem;
+    margin-bottom: 1rem;
     align-items: center;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
@@ -1354,6 +1354,10 @@ input {
     color: var(--accent2-color);
 }
 
+.order-tracking-button.active .pen{
+    color: var(--accent2-color);
+}
+
 .order-tracking-button p{
     font-size: 1em;
     color: var(--accent1-color);
@@ -1364,6 +1368,21 @@ input {
     font-size: 1.2em;
 }
 
+.order-title{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.order-title svg{
+    width: 15px;
+    height: 15px;
+    color: var(--accent1-color);
+    margin-right: 0.5rem;
+}
+
+
 .search-bar-tracking-container{
     position: relative;
 }
@@ -1372,10 +1391,37 @@ input {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);;
 }
 
+.order-header-container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.order-header{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 2rem;
+}
+
+.order-header h2{
+    color: var(--accent1-color);
+}
+
+.order-header h3{
+    color: var(--accent1-color);
+    font-size: 1.6em;
+}
+
 .orders{
     width: 100%;
     padding: 2rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -1493,12 +1539,169 @@ input {
 .order-details-container {
     width: 100%;
     border-radius: 10px;
-    padding: 1rem;
+    padding: 2rem;
     text-align: center;
     margin-top: 2rem;
     display: flex;
     justify-content: space-around;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    align-items: flex-start;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.order-text{
+    position: relative;
+}
+
+.order-text p {
+    padding: 0;
+    margin: 0;
+}
+
+.order-text svg{
+    width: 40px;
+    height: 40px;
+    color: var(--accent1-color);
+}
+
+.tooltip-text {
+  visibility: hidden;
+  opacity: 1;
+  width: max-content;
+  background-color: var(--accent1-color);
+  color: var(--primary-color);
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: 'Open Sans', sans-serif;
+  white-space: nowrap;
+  position: absolute;
+  bottom: 110%; /* show above */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  transition: opacity 0.2s ease;
+}
+
+
+.order-text:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.order-tracking-timeline{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+    width: 100%;
+}
+
+.timeline-toggle{
+    background-color: var(--accent2-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1em;
+    font-family: var(--font-text);
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.timeline-toggle svg {
+    width: 20px;
+    height: 20px;
+}
+
+.timeline {
+    display: none;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    gap: 2rem;
+    margin: 2rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-top: 2px solid #eee;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+.timeline-left {
+    width: 80px;
+    text-align: right;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.timeline-left h3, .timeline-left p {
+    margin: 0;
+}
+
+.inbetween-timeline h3, .inbetween-timeline p{
+    color: #A0A0A0;
+}
+
+.timeline-center {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    max-width: 40px;
+}
+
+.timeline-dot{
+    width: 10px;
+    height: 10px;
+    background-color: var(--accent1-color);
+    border-radius: 50%;
+}
+
+.timeline-right {
+    flex: 1;
+    padding-left: 10px;
+}
+
+.timeline-right h4 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    color: #333;
+}
+
+.timeline-right p {
+    margin: 0;
+    font-size: 1em;
+    color: #666;
+}
+
+.timeline-item:last-child .line {
+    display: none; /* Hide line for the last item */
+}
+
+
+
+.timeline.show{
+    display: flex;
 }
 
 
