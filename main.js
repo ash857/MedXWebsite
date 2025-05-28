@@ -17,7 +17,7 @@ const totalSlides = slides.length;
 const remainingSlides = totalSlides % slidesPerPage;
 
 function calculateSlidesPerPage() {
-  const isHomePage = window.location.pathname === "/" || window.location.pathname.includes("index");
+  const isHomePage = window.location.pathname === "/" || window.location.pathname.includes("index") || window.location.pathname.includes("about");
   const isTrackingPage = window.location.pathname.includes("order-tracking");
   if (isHomePage) {
     slidesPerPage = 1;
