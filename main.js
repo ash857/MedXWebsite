@@ -3,97 +3,94 @@ function toggleMobileMenu(menu) {
 }
 
 
-const carousel = document.querySelector('.carousel-container');
-const track = carousel.querySelector('.carousel-content');
-const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
-const nextButton = carousel.querySelector('.carousel-btn.next');
-const prevButton = carousel.querySelector('.carousel-btn.prev');
-const dotsContainer = carousel.querySelector('.carousel-dots');
-let offset;
-let currentPage = 0;
-let slidesPerPage = 1;
+function initCarousel(carousel) {
+  const track = carousel.querySelector('.carousel-content');
+  const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+  const nextButton = carousel.querySelector('.carousel-btn.next');
+  const prevButton = carousel.querySelector('.carousel-btn.prev');
+  const dotsContainer = carousel.querySelector('.carousel-dots');
 
-const totalSlides = slides.length;
-const remainingSlides = totalSlides % slidesPerPage;
+  let currentPage = 0;
+  let slidesPerPage = 1;
+  let offset = 0;
 
-function calculateSlidesPerPage() {
-  const isHomePage = window.location.pathname === "/" || window.location.pathname.includes("index") || window.location.pathname.includes("about");
-  const isTrackingPage = window.location.pathname.includes("order-tracking");
-  if (isHomePage) {
-    slidesPerPage = 1;
-  } else if(isTrackingPage){
+  function calculateSlidesPerPage() {
+    const path = window.location.pathname;
+    const isHome = path === "/" || path.includes("index") || path.includes("about");
+    const isTracking = path.includes("order-tracking");
+    const isSpecialCarousel = carousel.classList.contains('special-carousel');
+    
+
     const containerWidth = carousel.clientWidth;
-    const slideMinWidth = 150;
-    slidesPerPage = Math.max(1, Math.floor(containerWidth / slideMinWidth));
-  } else {
-    const containerWidth = carousel.clientWidth;
-    const slideMinWidth = 350;
-    slidesPerPage = Math.max(1, Math.floor(containerWidth / slideMinWidth));
-  }
+    const minWidth = isHome ? 9999 : isTracking ? 150 : isSpecialCarousel ? 400 : 350;
 
-  slides.forEach(slide => {
-    slide.style.width = `${100 / slidesPerPage}%`;
-  });
-
-  updateCarousel();
-  createDots();
-  setActiveDot();
-} 
-
-function updateCarousel() {
-  const slideWidth = slides[0].getBoundingClientRect().width;
-  let slidesLeft = totalSlides - currentPage * slidesPerPage;
-  if (slidesLeft < slidesPerPage) {
-    const maxOffset = (totalSlides - slidesPerPage) * slideWidth;
-    offset = Math.max(0, maxOffset); 
-  } else {
-    offset = currentPage * slideWidth * slidesPerPage;
-  }
-  track.style.transform = `translateX(-${offset}px)`;
-}
-
-function nextSlide() {
-  const maxPage = Math.ceil(slides.length / slidesPerPage) - 1;
-  currentPage = (currentPage + 1) > maxPage ? 0 : currentPage + 1;
-  updateCarousel();
-  setActiveDot();
-}
-
-function prevSlide() {
-  const maxPage = Math.ceil(slides.length / slidesPerPage) - 1;
-  currentPage = (currentPage - 1) < 0 ? maxPage : currentPage - 1;
-  updateCarousel();
-  setActiveDot();
-}
-
-function createDots() {
-  dotsContainer.innerHTML = "";
-  const pageCount = Math.ceil(slides.length / slidesPerPage);
-  for (let i = 0; i < pageCount; i++) {
-    const dot = document.createElement("span");
-    dot.classList.add("dot");
-    dot.addEventListener("click", () => {
-      currentPage = i;
-      updateCarousel();
-      setActiveDot();
+    slidesPerPage = Math.max(1, Math.floor(containerWidth / minWidth));
+    slides.forEach(slide => {
+      slide.style.width = `${100 / slidesPerPage}%`;
     });
-    dotsContainer.appendChild(dot);
+
+    updateCarousel();
+    if (isHome) {
+      createDots();
+      setActiveDot();
+    }
   }
+
+  function updateCarousel() {
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    const totalSlides = slides.length;
+    const maxOffset = (totalSlides - slidesPerPage) * slideWidth;
+    offset = Math.min(currentPage * slidesPerPage * slideWidth, maxOffset);
+    track.style.transform = `translateX(-${offset}px)`;
+  }
+
+  function nextSlide() {
+    const maxPage = Math.ceil(slides.length / slidesPerPage) - 1;
+    currentPage = currentPage >= maxPage ? 0 : currentPage + 1;
+    updateCarousel();
+    setActiveDot();
+  }
+
+  function prevSlide() {
+    const maxPage = Math.ceil(slides.length / slidesPerPage) - 1;
+    currentPage = currentPage <= 0 ? maxPage : currentPage - 1;
+    updateCarousel();
+    setActiveDot();
+  }
+
+  function createDots() {
+    dotsContainer.innerHTML = "";
+    const pageCount = Math.ceil(slides.length / slidesPerPage);
+    for (let i = 0; i < pageCount; i++) {
+      const dot = document.createElement("span");
+      dot.classList.add("dot");
+      if (i === currentPage) dot.classList.add("active");
+      dot.addEventListener("click", () => {
+        currentPage = i;
+        updateCarousel();
+        setActiveDot();
+      });
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  function setActiveDot() {
+    dotsContainer.querySelectorAll(".dot").forEach((dot, index) => {
+      dot.classList.toggle("active", index === currentPage);
+    });
+  }
+
+  nextButton?.addEventListener("click", nextSlide);
+  prevButton?.addEventListener("click", prevSlide);
+  window.addEventListener("resize", calculateSlidesPerPage);
+
+  calculateSlidesPerPage();
 }
 
-function setActiveDot() {
-  const dots = dotsContainer.querySelectorAll(".dot");
-  dots.forEach(dot => dot.classList.remove("active"));
-  if (dots[currentPage]) {
-    dots[currentPage].classList.add("active");
-  }
-}
+// Initialize all carousels
+document.querySelectorAll('.carousel-container').forEach(initCarousel);
 
-nextButton.addEventListener("click", nextSlide);
-prevButton.addEventListener("click", prevSlide);
-window.addEventListener("resize", calculateSlidesPerPage);
 
-calculateSlidesPerPage();
 
 
 let navbar = document.getElementById('top-nav-container');
@@ -318,3 +315,5 @@ function toggleTimeline() {
   const el = document.querySelector(".timeline");
   el.classList.toggle("show");
 }
+
+
