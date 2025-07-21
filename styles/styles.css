@@ -1241,6 +1241,8 @@ button{
 
 .signup-container{
     display: none;
+    flex-direction: column;
+    width: 100%;
 }
 
 .continue-with-buttons{
