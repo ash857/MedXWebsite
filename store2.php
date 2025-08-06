@@ -1,3 +1,9 @@
+<?php
+require_once 'cart_handler.php';
+require_once 'cart.php';
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +28,7 @@
                     </button>
                 </li>
                 <li>
-                    <div class = "cart-btn">
+                    <div class = "cart-btn" onclick="toggleCart(); updateCarousel()">
                         <svg class="cart-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                             d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
@@ -69,6 +75,19 @@
         </div>
     </header>
 
+    <div class="overlay">
+        <div class="overlay-inner">
+            <button class="close-overlay-btn" onclick="closeCartOverlay()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                </svg>
+            </button>
+            <div class="cart-overlay-content">
+
+            </div>
+        </div>
+    </div>
+
     <div class="banner">
         <div class="banner-content">
           <h1>Order Online</h1>
@@ -92,6 +111,8 @@
             </div>
         </div>
     </div>
+
+    
 
     <div class="category-sidebar">
         <button class="category-close-btn" onclick="toggleSideBar()">
@@ -136,7 +157,7 @@
     </div>
 
     <div class="sidebar-btn">
-        <button class="category-sidebar-toggle" onclick="toggleSideBar()">
+        <button class="category-sidebar-toggle" onclick="toggleSideBar(); updateCarousel()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/></svg>
         </button>
     </div>
@@ -170,156 +191,44 @@
             <div class="carousel-header">
                 <h2>Trending</h2>
                 <div class="carousel-btns">
+                    <button class = "see_more-btn">See All</button>
                     <button class = "carousel-btn prev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg></button>
                     <button class = "carousel-btn next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></button>
                 </div>
             </div>
             <div class="carousel-background">
                 <div class = "carousel-content store-carousel-content">
+                    <?php 
+                        $select_products = $conn->prepare("SELECT * FROM `products`");
+                        $select_products->execute();
+                        if($select_products->rowCount() > 0){
+                            while($fetch_prodcut = $select_products->fetch(PDO::FETCH_ASSOC)){
+                    ?>
                     <div class = "carousel-slide multi-slide">
                         <div class="carousel-slide-content">
                             <div class = "product-image">
-                                <img src="images/powder2.webp" alt="Product 1">
-                                <button class = "add-to-cart-btn">+</button>
+                                <img src="uploads/<?= $fetch_prodcut['image']; ?>" class="image" alt="">
+                                <button class="add-to-cart-btn" onclick="addToCartMenu(this)" data-name="<?= htmlspecialchars($fetch_prodcut['name']) ?>" data-description="This is some random description text blah blah" data-price="<?= $fetch_prodcut['price'] ?>" data-id="<?= $fetch_prodcut['id'] ?>" data-image="uploads/<?= $fetch_prodcut['image']; ?>" data-id="<?= $fetch_prodcut['id'] ?>">
+                                    +
+                                </button>
                             </div>
                             <div class = "product-text carousel-text">
-                                <h3>Whey Protein Powder</h3>
+                                <h3 class="name"><?= $fetch_prodcut['name'] ?></h3>
                                 <div class="sub-product-text">
-                                    <p>NZ$10.00</p>
+                                    <p class="price">$ <?= $fetch_prodcut['price'] ?></p>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
                                     <P>4.4★ (1000+)</P>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class = "carousel-slide multi-slide">
-                        <div class="carousel-slide-content">
-                            <div class = "product-image">
-                                <img src="images/flex_guy.webp" alt="Product 1">
-                                <button class = "add-to-cart-btn">+</button>
-                            </div>
-                            <div class = "product-text carousel-text">
-                                <h3>Flex Guy Creatine</h3>
-                                <div class="sub-product-text">
-                                    <p>NZ$99.98</p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                                    <P>2.1★ (4+)</P>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "carousel-slide multi-slide">
-                        <div class="carousel-slide-content">
-                            <div class = "product-image">
-                                <img src="images/protein2.jpg" alt="Product 1">
-                                <button class = "add-to-cart-btn">+</button>
-                            </div>
-                            <div class = "product-text carousel-text">
-                                <h3>Chocolate Protein Powder</h3>
-                                <div class="sub-product-text">
-                                    <p>NZ$11.00</p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                                    <P>4.9★ (10000+)</P>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "carousel-slide multi-slide">
-                        <div class="carousel-slide-content">
-                            <div class = "product-image">
-                                <img src="images/protein3.jpg" alt="Product 1">
-                                <button class = "add-to-cart-btn">+</button>
-                            </div>
-                            <div class = "product-text carousel-text">
-                                <h3>Whey protein powder</h3>
-                                <div class="sub-product-text">
-                                    <p>NZ$10.00</p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                                    <P>4.4★ (1000+)</P>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "carousel-slide multi-slide">
-                        <div class="carousel-slide-content">
-                            <div class = "product-image">
-                                <img src="images/powder2.webp" alt="Product 1">
-                                <button class = "add-to-cart-btn">+</button>
-                            </div>
-                            <div class = "product-text carousel-text">
-                                <h3>Whey protein powder</h3>
-                                <div class="sub-product-text">
-                                    <p>NZ$10.00</p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                                    <P>4.4★ (1000+)</P>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "carousel-slide multi-slide">
-                        <div class="carousel-slide-content">
-                            <div class = "product-image">
-                                <img src="images/powder2.webp" alt="Product 1">
-                                <button class = "add-to-cart-btn">+</button>
-                            </div>
-                            <div class = "product-text carousel-text">
-                                <h3>Whey protein powder</h3>
-                                <div class="sub-product-text">
-                                    <p>NZ$10.00</p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                                    <P>4.4★ (1000+)</P>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "carousel-slide multi-slide">
-                        <div class="carousel-slide-content">
-                            <div class = "product-image">
-                                <img src="images/powder2.webp" alt="Product 1">
-                                <button class = "add-to-cart-btn">+</button>
-                            </div>
-                            <div class = "product-text carousel-text">
-                                <h3>Whey protein powder</h3>
-                                <div class="sub-product-text">
-                                    <p>NZ$10.00</p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                                    <P>4.4★ (1000+)</P>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "carousel-slide multi-slide">
-                        <div class="carousel-slide-content">
-                            <div class = "product-image">
-                                <img src="images/powder2.webp" alt="Product 1">
-                                <button class = "add-to-cart-btn">+</button>
-                            </div>
-                            <div class = "product-text carousel-text">
-                                <h3>Whey protein powder</h3>
-                                <div class="sub-product-text">
-                                    <p>NZ$10.00</p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                                    <P>4.4★ (1000+)</P>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "carousel-slide multi-slide">
-                        <div class="carousel-slide-content">
-                            <div class = "product-image">
-                                <img src="images/powder2.webp" alt="Product 1">
-                                <button class = "add-to-cart-btn">+</button>
-                            </div>
-                            <div class = "product-text carousel-text">
-                                <h3>Whey protein powder</h3>
-                                <div class="sub-product-text">
-                                    <p>NZ$10.00</p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
-                                    <P>4.4★ (1000+)</P>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php
+                        }
+                    }else{
+                        echo '<p class="empty">no products found!</p>';
+                    }
+                    ?>
+                    
                 </div>
             </div>
         </div>
@@ -334,12 +243,13 @@
             <div class="carousel-header special-carousel-header">
                 <h2>Best Drugs</h2>
                 <div class="carousel-btns">
+                    <button class = "see_more-btn">See All</button>
                     <button class = "carousel-btn prev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg></button>
                     <button class = "carousel-btn next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></button>
                 </div>
             </div>
             <div class="carousel-background">
-                <div class = "carousel-content store-carousel-content">
+                <div class = "carousel-content store-carousel-content special-carousel-content">
                     <div class = "carousel-slide multi-slide">
                         <div class="carousel-slide-content">
                             <div class = "product-image">
@@ -492,10 +402,219 @@
                 <path d="M0,60 C500,0 1080,100 1440,60 L1440,0 L0,0 Z" fill="#f44336"></path>
             </svg>
         </div>
+
         <div class = "carousel-container store-carousel">
             <div class="carousel-header">
                 <h2>Fitness</h2>
                 <div class="carousel-btns">
+                    <button class = "see_more-btn">See All</button>
+                    <button class = "carousel-btn prev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg></button>
+                    <button class = "carousel-btn next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></button>
+                </div>
+            </div>
+            <div class="carousel-background">
+                <div class = "carousel-content store-carousel-content">
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/powder2.webp" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Whey Protein Powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$10.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.4★ (1000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/flex_guy.webp" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Flex Guy Creatine</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$99.98</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>2.1★ (4+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/protein2.jpg" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Chocolate Protein Powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$11.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.9★ (10000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/protein3.jpg" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Whey protein powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$10.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.4★ (1000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/powder2.webp" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Whey protein powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$10.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.4★ (1000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/powder2.webp" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Whey protein powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$10.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.4★ (1000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/powder2.webp" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Whey protein powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$10.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.4★ (1000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/powder2.webp" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Whey protein powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$10.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.4★ (1000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/powder2.webp" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Whey protein powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$10.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.4★ (1000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/powder2.webp" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Whey protein powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$10.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.4★ (1000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/powder2.webp" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Whey protein powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$10.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.4★ (1000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "carousel-slide multi-slide">
+                        <div class="carousel-slide-content">
+                            <div class = "product-image">
+                                <img src="images/powder2.webp" alt="Product 1">
+                                <button class = "add-to-cart-btn">+</button>
+                            </div>
+                            <div class = "product-text carousel-text">
+                                <h3>Whey protein powder</h3>
+                                <div class="sub-product-text">
+                                    <p>NZ$10.00</p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                                    <P>4.4★ (1000+)</P>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = "carousel-container store-carousel">
+            <div class="carousel-header">
+                <h2>Fitness</h2>
+                <div class="carousel-btns">
+                    <button class = "see_more-btn">See All</button>
                     <button class = "carousel-btn prev"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg></button>
                     <button class = "carousel-btn next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></button>
                 </div>
@@ -701,124 +820,196 @@
     <div class="category-content">
         <h2>Category</h2>
         <div class = "category-product-container">
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
-                </div>
-            </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/powder2.webp" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Whey Protein Powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$10.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.4★ (1000+)</P>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
-                </div>
-            </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/flex_guy.webp" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Flex Guy Creatine</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$99.98</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>2.1★ (4+)</P>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
-                </div>
-            </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/protein2.jpg" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Chocolate Protein Powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$11.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.9★ (10000+)</P>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
-                </div>
-            </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/protein3.jpg" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Whey protein powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$10.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.4★ (1000+)</P>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
-                </div>
-            </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/powder2.webp" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Whey protein powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$10.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.4★ (1000+)</P>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
-                </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/powder2.webp" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Whey protein powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$10.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.4★ (1000+)</P>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class = "category-product">
-                <div class = "product-image">
-                    <img src="images/image_template.png" alt="Product 1">
-                    <button class = "add-to-cart-btn">+</button>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/powder2.webp" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Whey protein powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$10.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.4★ (1000+)</P>
+                        </div>
+                    </div>
                 </div>
-                <div class = "product-text">
-                    <h3>Whey gold standard protein powder 1kg</h3>
-                    <p>NZ$10.00</p>
+            </div>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/powder2.webp" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Whey protein powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$10.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.4★ (1000+)</P>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/powder2.webp" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Whey protein powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$10.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.4★ (1000+)</P>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/powder2.webp" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Whey protein powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$10.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.4★ (1000+)</P>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/powder2.webp" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Whey protein powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$10.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.4★ (1000+)</P>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class = "carousel-slide multi-slide">
+                <div class="carousel-slide-content">
+                    <div class = "product-image">
+                        <img src="images/powder2.webp" alt="Product 1">
+                        <button class = "add-to-cart-btn">+</button>
+                    </div>
+                    <div class = "product-text carousel-text">
+                        <h3>Whey protein powder</h3>
+                        <div class="sub-product-text">
+                            <p>NZ$10.00</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg>
+                            <P>4.4★ (1000+)</P>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -861,5 +1052,7 @@
         </div>
     </footer>
     <script src="main.js"></script>
+    <?php include 'alert.php'; ?>
+    
 </body>
 </html>

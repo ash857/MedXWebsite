@@ -1,3 +1,9 @@
+<?php
+require_once 'cart_handler.php';
+require_once 'cart.php';
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +12,7 @@
     <title>MedX Website</title>
     <link rel="stylesheet" type = "text/css" href="styles/styles.css">
 </head>
-<body>
+<body class="body">
     
     <div class="hover-zone"></div>
 
@@ -16,7 +22,8 @@
         </div>
         <div id = "desktop-nav">
             <ul>
-                <li><a href = "store.html" class="nav-text">Store</a></li>
+                <li><a href = "store.php" class="nav-text">Store</a></li>
+                <li><a href = "add_product.php" class="nav-text">Add</a></li>
                 <li>
                     <div class="sign-in-button" onclick="window.location.href='login.php'">
                         <p>Sign In</p>
@@ -39,7 +46,7 @@
                   <div class="bar2"></div>
                   <div class="bar3"></div>
                 </li>
-                <li><a href = "store.html">Store</a></li>
+                <li><a href = "store.php">Store</a></li>
                 <li>
                     <div class = "mobile-account-btn">
                         <a>A</a>
@@ -255,8 +262,8 @@
                 <p>&copy; MedX 2025</p>
                 <div class="footer-links">
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="store.html">Store</a></li>
+                        <li><a href="index.php">Home</a></li>
+                        <li><a href="store.php">Store</a></li>
                         <li><a href="about.html">About</a></li>
                         <li><a href="order-tracking.html">My Orders</a></li>
                         <li><a href="#">Help</a></li>
